@@ -15,9 +15,12 @@ font.encoding   = "UnicodeFull"
 font.version    = "1.0"
 
 # list of character number
-num = lambda x : int(os.path.splitext(os.path.basename(x))[0], 16)
-lst = list(map(num, glob.glob("../img/*.png")))
-lst.sort()
+num16 = lambda x : int(os.path.splitext(os.path.basename(x))[0], 16)
+lst = list(map(num16, glob.glob("../img/*.png")))
+
+# list of tsuro tile number
+num10 = lambda x : int(os.path.splitext(os.path.basename(x))[0], 10)
+tiles = list(map(num10, glob.glob("../tile/*.svg")))
 
 # function to generate svg
 def gensvg(i):
@@ -37,6 +40,13 @@ for i in lst:
 		glyph = font.createMappedChar(point + i)       
 		glyph.importOutlines("%03x.svg" % i) 
 		os.system("rm %03x.svg" % i)
+
+# register tsuro tile glyph
+point = 0x1001D0 # first code point of tsuro tile
+for i in tiles:
+	if os.path.exists("../tile/%03d.svg" % i):
+		glyph = font.createMappedChar(point + i)       
+		glyph.importOutlines("../tile/%03d.svg" % i) 
 
 # save twahi ttf
 font.generate('twahi.ttf')
