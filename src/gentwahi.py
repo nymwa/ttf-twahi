@@ -22,6 +22,9 @@ lst = list(map(num16, glob.glob("../img/*.png")))
 num10 = lambda x : int(os.path.splitext(os.path.basename(x))[0], 10)
 tiles = list(map(num10, glob.glob("../tile/*.svg")))
 
+# list of tsuro empty tile numberr
+empts = list(map(num10, glob.glob("../piece/*.svg")))
+
 # function to generate svg
 def gensvg(i):
 	if os.path.exists("../img/%03x.png" % i):
@@ -47,6 +50,13 @@ for i in tiles:
 	if os.path.exists("../tile/%03d.svg" % i):
 		glyph = font.createMappedChar(point + i)       
 		glyph.importOutlines("../tile/%03d.svg" % i) 
+
+# regiter tsuro empty tile glyph
+point = 0x100240
+for i in empts:
+	if os.path.exists("../piece/%03d.svg" % i):
+		glyph = font.createMappedChar(point + i)       
+		glyph.importOutlines("../piece/%03d.svg" % i) 
 
 # save twahi ttf
 font.generate('twahi.ttf')
